@@ -19,7 +19,9 @@
         NSArray *pairArray = [pair componentsSeparatedByString:@"="];
         if ([pairArray count] < 2) continue; // The value is null.
         
-        [parameters setObject:[pairArray lastObject] forKey:[pairArray firstObject]];
+        NSString *key = [[pairArray firstObject] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *value = [[pairArray lastObject] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        [parameters setObject:value forKey:key];
     }
     
     return parameters;

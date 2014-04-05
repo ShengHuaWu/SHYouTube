@@ -76,23 +76,24 @@
 {
     // If the operation queue is suspended or the path is nil, do not add download operaton.
     if (self.operationQueue.isSuspended || ![path length]) return;
+    
     // Download the image data from the url path in background queue
     [self.operationQueue addOperationWithBlock:^{
-        NSURL *url = [NSURL URLWithString:path];
-        NSData *imageData = [NSData dataWithContentsOfURL:url];
-        UIImage *thumbnail = [UIImage imageWithData:imageData];
+        // Create a HTTP GET request
+        NSURLRequest *request = [NSURLRequest requestWithHTTPMethod:@"GET" urlString:path header:@{@"User-Agent": @"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.79 Safari/537.4"} andHTTPBody:nil];
+        // Send request
+        NSError *error = nil;
+        NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+        UIImage *thumbnail = [UIImage imageWithData:responseData];
         // Back to the main queue
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if (thumbnail) {
-                if (completion) {
-                    completion(thumbnail);
+            if (error) {
+                if (failure) {
+                    failure(error);
                 }
             } else {
-                // Raise an error if image data is nil.
-                if (failure) {
-                    // Need to define error code
-                    NSError *error = [NSError errorWithDomain:@"SHYouTubeServiceDownloadError" code:0 userInfo:@{NSLocalizedDescriptionKey: @"Thumbnail is nil."}];
-                    failure(error);
+                if (completion) {
+                    completion(thumbnail);
                 }
             }
         }];

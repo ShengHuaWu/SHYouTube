@@ -43,7 +43,7 @@ typedef void (^SHYouTubeServiceFailure) (NSError *error);
 /**
  *  @brief Download the thumbnail image from the url asynchronously. The completion block and the failure block are called in the main thread.
  *
- *  @param path       The path of the thumbnail url
+ *  @param path       The path of the thumbnail url. You can get this path by call the method of SHYouTube
  *  @param completion Return the thumbnail image
  *  @param failure    Return an error
  */
