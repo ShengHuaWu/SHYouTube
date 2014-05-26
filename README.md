@@ -26,3 +26,6 @@ Asynchronously download the thumbnail for a particular size .
 ## Future work
 Probably, we can store the video at the temporary directory of the device.
 Furthermore, we can set this class as a property of the _NSManagedObject_ subclass.
+
+## Submodule
+This project is used to be a submodule of [GitSubmoduleInstallation](https://github.com/ShengHuaWu/GitSubmoduleInstallation).
